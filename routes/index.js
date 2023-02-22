@@ -82,4 +82,17 @@ router.post("/books/:id", asyncHandler(async (req, res) => {
   }
 }));
 
+// Deletes book from database
+router.post("/books/:id/delete", asyncHandler(async (req, res) => {
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    await book.destroy();
+    res.redirect("/");
+  } else {
+    const err = new Error();
+    err.status = 400;
+    res.render("page-not-found", {title: "Page Not Found", err});
+  }
+}));
+
 module.exports = router;
